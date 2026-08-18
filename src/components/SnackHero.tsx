@@ -16,6 +16,7 @@ import {
   GreenergyProduct 
 } from '../data/flavors';
 import { GreenergyLogo } from './GreenergyLogo';
+import { initializeImagePreloader, preloadProduct } from '../utils/imagePreloader';
 
 interface SnackHeroProps {
   onProductClick?: (flavor: GreenergyProduct) => void;
@@ -62,6 +63,20 @@ export const SnackHero: React.FC<SnackHeroProps> = ({
       window.removeEventListener('orientationchange', updateScale);
     };
   }, []);
+
+  // Initialize global preloader on mount to buffer all images into browser memory
+  useEffect(() => {
+    initializeImagePreloader();
+  }, []);
+
+  // Proactively preload adjacent products whenever category or flavor index changes
+  useEffect(() => {
+    const list = getCategoryProducts(activeCategory);
+    const nextProduct = list[(currentIndex + 1) % list.length];
+    const prevProduct = list[(currentIndex - 1 + list.length) % list.length];
+    if (nextProduct) preloadProduct(nextProduct, 'high');
+    if (prevProduct) preloadProduct(prevProduct, 'high');
+  }, [activeCategory, currentIndex]);
 
   // Haptic feedback vibration for mobile touch interactions
   const triggerHaptic = () => {
@@ -637,6 +652,8 @@ export const SnackHero: React.FC<SnackHeroProps> = ({
                         <img 
                           src={item.image} 
                           alt={item.name} 
+                          loading="eager"
+                          decoding="async"
                           className="w-full h-full object-contain filter drop-shadow-2xl pointer-events-auto transition-transform duration-300 hover:scale-[1.08]"
                         />
                       </motion.div>
@@ -687,6 +704,9 @@ export const SnackHero: React.FC<SnackHeroProps> = ({
                 <img 
                   src={currentProduct.productBoxImage} 
                   alt={currentProduct.name} 
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
                   className="w-full h-full object-contain filter drop-shadow-[0_24px_34px_rgba(0,0,0,0.38)] transition-transform duration-700 ease-out group-hover:scale-105 select-none pointer-events-none"
                 />
                 

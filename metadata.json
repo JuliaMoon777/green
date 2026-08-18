@@ -1,0 +1,8 @@
+{
+  "name": "Remix Greenergy - Let\u0027s Raw Crunchy Fava Beans",
+  "description": "Interaktywny slider 3D dla produktów Greenergy Let's Raw: Crunchy Snacks, Raw Balls, Protein Cookies oraz Pre-Workout z dedykowanymi animacjami i dynamicznymi efektami 3D.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

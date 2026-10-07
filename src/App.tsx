@@ -1,35 +1,52 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState, useEffect } from 'react';
+import { AnimatePresence } from 'motion/react';
 import { Preloader } from './components/Preloader';
+import { CollectionIntro } from './components/CollectionIntro';
 import { SnackHero } from './components/SnackHero';
+import { initializeImagePreloader } from './utils/imagePreloader';
+
+type ExperienceStage = 'preloader' | 'intro' | 'ready';
 
 export default function App() {
-  const [isPreloading, setIsPreloading] = useState(true);
+  const [stage, setStage] = useState<ExperienceStage>('preloader');
+  const [isHeroRevealed, setIsHeroRevealed] = useState(false);
+
+  // Begin preloading & decoding all 12 collection packshots and initial hero assets immediately on mount
+  useEffect(() => {
+    initializeImagePreloader();
+  }, []);
 
   return (
-    <div className="h-screen w-full relative bg-[#FAF7F0] text-[#1B2D1F] overflow-hidden font-sans select-none">
+    <div className="min-h-[100svh] w-full relative bg-[#FAF6ED] text-[#1B2D1F] overflow-x-clip font-sans select-none">
       {/* 1. Gourmet Bitten-Cookie & Chocolate Preloader */}
-      <AnimatePresence mode="wait">
-        {isPreloading && (
-          <Preloader 
-            key="cookie-preloader" 
-            onComplete={() => setIsPreloading(false)} 
-            minDuration={1600} 
+      <AnimatePresence>
+        {stage === 'preloader' && (
+          <Preloader
+            key="cookie-preloader"
+            onComplete={() => setStage('intro')}
+            minDuration={1550}
           />
         )}
       </AnimatePresence>
 
-      {/* 2. Custom GREENERGY Product Presentation Stage (Directly Revealed After Preloader) */}
-      {!isPreloading && (
-        <motion.div
-          key="product-presentation-stage"
-          initial={{ opacity: 0, scale: 1.015 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full h-full absolute inset-0"
-        >
-          <SnackHero />
-        </motion.div>
+      {/* 2. Cinematic GREENERGY Collection Intro (Plays once right after preloader) */}
+      <AnimatePresence>
+        {stage === 'intro' && (
+          <CollectionIntro
+            key="greenergy-collection-intro"
+            onTransitionStart={() => setIsHeroRevealed(true)}
+            onComplete={() => {
+              setIsHeroRevealed(true);
+              setStage('ready');
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* 3. Main Interactive GREENERGY Product Presentation & Inline Product Information */}
+      {/* Mounted seamlessly underneath so background scene and first product transition with 0ms flash */}
+      {stage !== 'preloader' && (
+        <SnackHero isIntroActive={stage === 'intro' && !isHeroRevealed} />
       )}
     </div>
   );

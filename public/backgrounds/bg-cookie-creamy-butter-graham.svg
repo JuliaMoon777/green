@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    
+    <radialGradient id="bg-base-cookie-creamy-butter-graham" cx="50%" cy="45%" r="75%">
+      <stop offset="0%" stop-color="#FDFBF5" />
+      <stop offset="45%" stop-color="#F9F2D8" />
+      <stop offset="80%" stop-color="#F2E1B5" />
+      <stop offset="100%" stop-color="#E8CE8E" />
+    </radialGradient>
+    <linearGradient id="butter-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF176" stop-opacity="0.75" />
+      <stop offset="100%" stop-color="#FFD54F" stop-opacity="0.5" />
+    </linearGradient>
+    <linearGradient id="graham-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D7CCC8" stop-opacity="0.65" />
+      <stop offset="100%" stop-color="#A1887F" stop-opacity="0.4" />
+    </linearGradient>
+    <filter id="soft-blur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="35" result="blur" />
+    </filter>
+    <filter id="deep-blur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="65" result="deepBlur" />
+    </filter>
+    <filter id="gentle-blur" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="20" result="gentleBlur" />
+    </filter>
+    
+    <radialGradient id="center-highlight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.32" />
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="dark-center-highlight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15" />
+      <stop offset="65%" stop-color="#ffffff" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Base Ambient Scene Fill -->
+  <rect width="1920" height="1080" fill="url(#bg-base-cookie-creamy-butter-graham)" />
+
+  <!-- Natural Ingredients Behind Glass Layer -->
+  <g id="ingredient-elements">
+    
+      <!-- Soft creamy butter pats & melted swirls -->
+      <rect x="220" y="220" width="220" height="180" rx="60" transform="rotate(-15 220 220)" fill="url(#butter-grad)" filter="url(#deep-blur)" />
+      <circle cx="340" cy="320" r="110" fill="#FFF9C4" opacity="0.7" filter="url(#soft-blur)" />
+      <rect x="1580" y="700" width="240" height="200" rx="70" transform="rotate(20 1580 700)" fill="url(#butter-grad)" filter="url(#deep-blur)" />
+      <circle cx="1660" cy="780" r="120" fill="#FFE082" opacity="0.6" filter="url(#soft-blur)" />
+      <!-- Graham grain sheaves & toasted wheat motifs -->
+      <path d="M 140,580 C 260,460 420,580 340,740 C 260,880 80,740 140,580 Z" fill="url(#graham-grad)" filter="url(#deep-blur)" />
+      <path d="M 1740,240 C 1600,160 1780,60 1880,160 C 1960,260 1840,360 1740,240 Z" fill="url(#graham-grad)" filter="url(#deep-blur)" />
+      <circle cx="580" cy="180" r="100" fill="url(#butter-grad)" filter="url(#deep-blur)" />
+      <circle cx="1360" cy="880" r="110" fill="url(#butter-grad)" filter="url(#deep-blur)" />
+  </g>
+
+  <!-- Center Product Halo Spotlight -->
+  <rect width="1920" height="1080" fill="url(#center-highlight)" />
+
+  <!-- Frosted Glass Matte Diffuse Veil -->
+  
+      <rect width="1920" height="1080" fill="#FCFAF2" opacity="0.46" />
+      <radialGradient id="vignette-butter-graham" cx="50%" cy="50%" r="70%">
+        <stop offset="40%" stop-color="#000000" stop-opacity="0" />
+        <stop offset="100%" stop-color="#9C6F34" stop-opacity="0.09" />
+      </radialGradient>
+      <rect width="1920" height="1080" fill="url(#vignette-butter-graham)" />
+</svg>

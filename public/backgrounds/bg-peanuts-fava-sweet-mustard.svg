@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    
+    <radialGradient id="bg-base-peanuts-fava-sweet-mustard" cx="50%" cy="45%" r="75%">
+      <stop offset="0%" stop-color="#2E2413" />
+      <stop offset="45%" stop-color="#241B0D" />
+      <stop offset="80%" stop-color="#1A1208" />
+      <stop offset="100%" stop-color="#110B04" />
+    </radialGradient>
+    <linearGradient id="mustard-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBC02D" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#F57F17" stop-opacity="0.4" />
+    </linearGradient>
+    <linearGradient id="honey-deep-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFA000" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#E65100" stop-opacity="0.35" />
+    </linearGradient>
+    <filter id="soft-blur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="35" result="blur" />
+    </filter>
+    <filter id="deep-blur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="65" result="deepBlur" />
+    </filter>
+    <filter id="gentle-blur" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="20" result="gentleBlur" />
+    </filter>
+    
+    <radialGradient id="center-highlight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.32" />
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="dark-center-highlight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15" />
+      <stop offset="65%" stop-color="#ffffff" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Base Ambient Scene Fill -->
+  <rect width="1920" height="1080" fill="url(#bg-base-peanuts-fava-sweet-mustard)" />
+
+  <!-- Natural Ingredients Behind Glass Layer -->
+  <g id="ingredient-elements">
+    
+      <!-- Soft golden honey & mustard seed glows -->
+      <circle cx="280" cy="260" r="170" fill="url(#mustard-gold-grad)" filter="url(#deep-blur)" />
+      <circle cx="360" cy="340" r="120" fill="#FFEE58" opacity="0.4" filter="url(#soft-blur)" />
+      <circle cx="1660" cy="750" r="200" fill="url(#honey-deep-grad)" filter="url(#deep-blur)" />
+      <circle cx="1560" cy="830" r="140" fill="url(#mustard-gold-grad)" filter="url(#deep-blur)" />
+      <!-- Diffused honeycomb & peanut shapes -->
+      <polygon points="140,560 220,520 300,560 300,660 220,700 140,660" fill="url(#mustard-gold-grad)" opacity="0.5" filter="url(#deep-blur)" />
+      <path d="M 1740,240 C 1600,160 1780,60 1880,160 C 1960,260 1840,360 1740,240 Z" fill="url(#honey-deep-grad)" filter="url(#deep-blur)" />
+      <circle cx="600" cy="180" r="100" fill="url(#honey-deep-grad)" filter="url(#deep-blur)" />
+      <circle cx="1360" cy="880" r="110" fill="url(#mustard-gold-grad)" filter="url(#deep-blur)" />
+  </g>
+
+  <!-- Center Product Halo Spotlight -->
+  <rect width="1920" height="1080" fill="url(#dark-center-highlight)" />
+
+  <!-- Frosted Glass Matte Diffuse Veil -->
+  
+      <rect width="1920" height="1080" fill="#1C150B" opacity="0.30" />
+      <radialGradient id="vignette-sweet-mustard" cx="50%" cy="50%" r="70%">
+        <stop offset="40%" stop-color="#000000" stop-opacity="0" />
+        <stop offset="100%" stop-color="#000000" stop-opacity="0.35" />
+      </radialGradient>
+      <rect width="1920" height="1080" fill="url(#vignette-sweet-mustard)" />
+</svg>

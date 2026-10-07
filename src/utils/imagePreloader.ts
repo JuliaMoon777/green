@@ -1,10 +1,11 @@
 import {
-  GREENERGY_PRODUCTS,
-  RAW_BALLS_PRODUCTS,
+  FAVA_BEANS_PRODUCTS,
+  CHICKPEA_SNACKS_PRODUCTS,
   PROTEIN_COOKIES_PRODUCTS,
-  PRE_WORKOUT_PRODUCTS,
+  PEANUTS_FAVA_PRODUCTS,
   GreenergyProduct
 } from '../data/flavors';
+import { getProductEffectsById } from '../data/product-effects';
 
 const preloadedUrls = new Set<string>();
 
@@ -49,6 +50,9 @@ export const preloadProduct = (product: GreenergyProduct, priority: 'high' | 'au
   if (product.thumbImage && product.thumbImage !== product.productBoxImage) {
     promises.push(preloadImage(product.thumbImage, priority));
   }
+  if (product.backgroundImage) {
+    promises.push(preloadImage(product.backgroundImage, priority));
+  }
   if (product.floatingItems) {
     product.floatingItems.forEach((item) => {
       if (item.image) {
@@ -56,6 +60,12 @@ export const preloadProduct = (product: GreenergyProduct, priority: 'high' | 'au
       }
     });
   }
+  const effectItems = getProductEffectsById(product.id);
+  effectItems.forEach((item) => {
+    if (item.asset) {
+      promises.push(preloadImage(item.asset, priority));
+    }
+  });
   return Promise.all(promises);
 };
 
@@ -64,13 +74,13 @@ export const preloadProduct = (product: GreenergyProduct, priority: 'high' | 'au
  * then rapidly cascades through all categories in memory.
  */
 export const initializeImagePreloader = () => {
-  // 1. Critical Priority: First 4 crunchy snacks pouches & ingredients (Active category)
-  const initialSnacks = GREENERGY_PRODUCTS;
+  // 1. Critical Priority: First 4 fava beans chips pouches (Active category)
+  const initialSnacks = FAVA_BEANS_PRODUCTS;
   const initialPromises = initialSnacks.map((p) => preloadProduct(p, 'high'));
 
   Promise.all(initialPromises).then(() => {
     // 2. High Priority: Next categories
-    const secondaryCategories = [RAW_BALLS_PRODUCTS, PROTEIN_COOKIES_PRODUCTS, PRE_WORKOUT_PRODUCTS];
+    const secondaryCategories = [CHICKPEA_SNACKS_PRODUCTS, PROTEIN_COOKIES_PRODUCTS, PEANUTS_FAVA_PRODUCTS];
     
     // Stagger slightly or load in idle
     const loadRemaining = () => {

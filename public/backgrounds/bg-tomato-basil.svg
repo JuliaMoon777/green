@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    
+    <radialGradient id="bg-base-tomato-basil" cx="50%" cy="45%" r="75%">
+      <stop offset="0%" stop-color="#FCF6F3" />
+      <stop offset="45%" stop-color="#F8E7E3" />
+      <stop offset="80%" stop-color="#F1CFCA" />
+      <stop offset="100%" stop-color="#E8B7B0" />
+    </radialGradient>
+    <linearGradient id="tomato-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E53935" stop-opacity="0.65" />
+      <stop offset="100%" stop-color="#B71C1C" stop-opacity="0.4" />
+    </linearGradient>
+    <linearGradient id="basil-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#43A047" stop-opacity="0.65" />
+      <stop offset="100%" stop-color="#1B5E20" stop-opacity="0.4" />
+    </linearGradient>
+    <filter id="soft-blur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="35" result="blur" />
+    </filter>
+    <filter id="deep-blur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="65" result="deepBlur" />
+    </filter>
+    <filter id="gentle-blur" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="20" result="gentleBlur" />
+    </filter>
+    
+    <radialGradient id="center-highlight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.32" />
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="dark-center-highlight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15" />
+      <stop offset="65%" stop-color="#ffffff" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Base Ambient Scene Fill -->
+  <rect width="1920" height="1080" fill="url(#bg-base-tomato-basil)" />
+
+  <!-- Natural Ingredients Behind Glass Layer -->
+  <g id="ingredient-elements">
+    
+      <!-- Soft blurred heirloom tomatoes -->
+      <circle cx="260" cy="280" r="180" fill="url(#tomato-grad)" filter="url(#deep-blur)" />
+      <circle cx="340" cy="340" r="130" fill="#FF8A80" opacity="0.5" filter="url(#soft-blur)" />
+      <circle cx="1660" cy="760" r="220" fill="url(#tomato-grad)" filter="url(#deep-blur)" />
+      <circle cx="1580" cy="850" r="150" fill="url(#tomato-grad)" filter="url(#deep-blur)" />
+      <!-- Lush basil leaves -->
+      <path d="M 220,620 C 130,520 280,440 400,500 C 500,570 340,710 220,620 Z" fill="url(#basil-grad)" filter="url(#deep-blur)" />
+      <path d="M 380,460 C 440,360 560,400 540,500 C 510,600 340,550 380,460 Z" fill="url(#basil-grad)" filter="url(#soft-blur)" />
+      <path d="M 1700,260 C 1580,180 1720,100 1820,160 C 1920,230 1810,340 1700,260 Z" fill="url(#basil-grad)" filter="url(#deep-blur)" />
+      <path d="M 1480,400 C 1420,320 1520,260 1600,310 C 1670,360 1570,470 1480,400 Z" fill="url(#basil-grad)" filter="url(#soft-blur)" />
+      <!-- Small tomato shapes floating in periphery -->
+      <circle cx="560" cy="180" r="100" fill="url(#tomato-grad)" filter="url(#deep-blur)" />
+      <circle cx="1380" cy="900" r="110" fill="url(#tomato-grad)" filter="url(#deep-blur)" />
+  </g>
+
+  <!-- Center Product Halo Spotlight -->
+  <rect width="1920" height="1080" fill="url(#center-highlight)" />
+
+  <!-- Frosted Glass Matte Diffuse Veil -->
+  
+      <rect width="1920" height="1080" fill="#FAF4F2" opacity="0.46" />
+      <radialGradient id="vignette-tomato-basil" cx="50%" cy="50%" r="70%">
+        <stop offset="40%" stop-color="#000000" stop-opacity="0" />
+        <stop offset="100%" stop-color="#C62828" stop-opacity="0.08" />
+      </radialGradient>
+      <rect width="1920" height="1080" fill="url(#vignette-tomato-basil)" />
+</svg>

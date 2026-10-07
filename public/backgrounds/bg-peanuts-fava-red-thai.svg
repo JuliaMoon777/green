@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    
+    <radialGradient id="bg-base-peanuts-fava-red-thai" cx="50%" cy="45%" r="75%">
+      <stop offset="0%" stop-color="#2D201D" />
+      <stop offset="45%" stop-color="#241715" />
+      <stop offset="80%" stop-color="#1A0F0D" />
+      <stop offset="100%" stop-color="#120908" />
+    </radialGradient>
+    <linearGradient id="thai-red-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E53935" stop-opacity="0.65" />
+      <stop offset="100%" stop-color="#8B0000" stop-opacity="0.45" />
+    </linearGradient>
+    <linearGradient id="lime-thai-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7CB342" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#33691E" stop-opacity="0.4" />
+    </linearGradient>
+    <linearGradient id="peanut-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D7CCC8" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#8D6E63" stop-opacity="0.25" />
+    </linearGradient>
+    <filter id="soft-blur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="35" result="blur" />
+    </filter>
+    <filter id="deep-blur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="65" result="deepBlur" />
+    </filter>
+    <filter id="gentle-blur" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="20" result="gentleBlur" />
+    </filter>
+    
+    <radialGradient id="center-highlight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.32" />
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="dark-center-highlight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15" />
+      <stop offset="65%" stop-color="#ffffff" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Base Ambient Scene Fill -->
+  <rect width="1920" height="1080" fill="url(#bg-base-peanuts-fava-red-thai)" />
+
+  <!-- Natural Ingredients Behind Glass Layer -->
+  <g id="ingredient-elements">
+    
+      <!-- Soft blurred red thai chilies & lime leaves -->
+      <circle cx="280" cy="260" r="170" fill="url(#thai-red-grad)" filter="url(#deep-blur)" />
+      <circle cx="360" cy="340" r="120" fill="#FF5252" opacity="0.4" filter="url(#soft-blur)" />
+      <circle cx="1660" cy="750" r="200" fill="url(#thai-red-grad)" filter="url(#deep-blur)" />
+      <circle cx="1560" cy="830" r="140" fill="url(#lime-thai-grad)" filter="url(#deep-blur)" />
+      <!-- Kaffir lime leaves & curved peanut shapes -->
+      <path d="M 160,560 C 260,440 400,540 360,680 C 310,820 120,720 160,560 Z" fill="url(#lime-thai-grad)" filter="url(#deep-blur)" />
+      <path d="M 1740,240 C 1600,160 1780,60 1880,160 C 1960,260 1840,360 1740,240 Z" fill="url(#peanut-grad)" filter="url(#deep-blur)" />
+      <ellipse cx="600" cy="180" rx="90" ry="140" transform="rotate(35 600 180)" fill="url(#thai-red-grad)" filter="url(#deep-blur)" />
+      <ellipse cx="1360" cy="880" rx="100" ry="150" transform="rotate(-25 1360 880)" fill="url(#lime-thai-grad)" filter="url(#deep-blur)" />
+  </g>
+
+  <!-- Center Product Halo Spotlight -->
+  <rect width="1920" height="1080" fill="url(#dark-center-highlight)" />
+
+  <!-- Frosted Glass Matte Diffuse Veil -->
+  
+      <rect width="1920" height="1080" fill="#1C1311" opacity="0.32" />
+      <radialGradient id="vignette-red-thai" cx="50%" cy="50%" r="70%">
+        <stop offset="40%" stop-color="#000000" stop-opacity="0" />
+        <stop offset="100%" stop-color="#000000" stop-opacity="0.35" />
+      </radialGradient>
+      <rect width="1920" height="1080" fill="url(#vignette-red-thai)" />
+</svg>

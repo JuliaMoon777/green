@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   ChevronLeft,
   ChevronRight,
-  ArrowUpRight,
 } from 'lucide-react';
 import {
   FAVA_BEANS_PRODUCTS,
@@ -16,6 +15,8 @@ import { GreenergyLogo } from './GreenergyLogo';
 import { SocialLinks } from './SocialLinks';
 import { ProductBackgroundScene } from './ProductBackgroundScene';
 import { ProductInlineInfo } from './ProductInlineInfo';
+import { PixelatedMosaicPackshot } from './PixelatedMosaicPackshot';
+import { Footer } from './Footer';
 import {
   initializeImagePreloader,
   preloadProduct,
@@ -28,6 +29,9 @@ interface SnackHeroProps {
   initialProductId?: string;
   isIntroActive?: boolean;
   onProductClick?: (flavor: GreenergyProduct) => void;
+  onNavigateAboutUs?: () => void;
+  onNavigateHome?: () => void;
+  externalCategoryRequest?: { category: ProductCategory; requestId: number } | null;
 }
 
 export type ProductCategory =
@@ -71,6 +75,9 @@ export const SnackHero: React.FC<SnackHeroProps> = ({
   initialCategory = 'fava-beans',
   isIntroActive = false,
   onProductClick,
+  onNavigateAboutUs,
+  onNavigateHome,
+  externalCategoryRequest,
 }) => {
   const [activeCategory, setActiveCategory] = useState<ProductCategory>(initialCategory);
   const [categoryDirection, setCategoryDirection] = useState(1);
@@ -199,6 +206,28 @@ export const SnackHero: React.FC<SnackHeroProps> = ({
     [activeCategory, commitProductSwitch, triggerHaptic]
   );
 
+  const lastHandledRequestIdRef = useRef<number | null>(null);
+
+  // Handle category selection triggered from Footer while on /about-us
+  useEffect(() => {
+    if (
+      !externalCategoryRequest ||
+      externalCategoryRequest.requestId === lastHandledRequestIdRef.current
+    ) {
+      return;
+    }
+    lastHandledRequestIdRef.current = externalCategoryRequest.requestId;
+    const targetCategory = externalCategoryRequest.category;
+    if (targetCategory === activeCategory) {
+      setCurrentIndex(0);
+      return;
+    }
+    const prevIdx = CATEGORY_ORDER.indexOf(activeCategory);
+    const nextIdx = CATEGORY_ORDER.indexOf(targetCategory);
+    const catDir = nextIdx > prevIdx ? 1 : -1;
+    commitProductSwitch(targetCategory, 0, catDir, catDir);
+  }, [externalCategoryRequest, activeCategory, commitProductSwitch]);
+
   // Looping Category Arrow Navigation (Mobile / Narrow Tablet Glass Control)
   const nextCategory = useCallback(() => {
     triggerHaptic();
@@ -302,6 +331,7 @@ export const SnackHero: React.FC<SnackHeroProps> = ({
   ];
 
   const isDarkScene = currentProduct.id.includes('peanuts');
+  const isComingSoonProduct = currentProduct.id === 'protein-cookies-creamy-butter-graham';
   const activeCategoryLabel =
     CATEGORY_TABS.find((t) => t.id === activeCategory)?.label || 'FAVA BEANS';
 
@@ -330,14 +360,18 @@ export const SnackHero: React.FC<SnackHeroProps> = ({
         }`}
       >
         {/* FIRST-SCREEN HERO PRESENTATION */}
-        <div className="relative z-10 w-full min-h-[75svh] sm:min-h-[82svh] lg:min-h-[100svh] flex flex-col justify-between pt-safe">
+        <div className="relative z-10 w-full min-h-[82svh] sm:min-h-[86svh] md:min-h-[88svh] lg:min-h-[100dvh] flex flex-col justify-between pt-safe">
           {/* 2A. SIMPLIFIED MOBILE & NARROW TABLET HEADER + GLASS CATEGORY CONTROL (< 1024px) */}
           <header className="relative z-40 w-full lg:hidden pt-2 sm:pt-3.5 pb-1 flex flex-col items-center gap-2 flex-shrink-0">
             {/* Top Row: Consistent Top-Left GREENERGY Logo + Subtle Glass Social Icons */}
             <div className="w-full px-4 sm:px-6 pl-safe pr-safe flex items-center justify-between">
-              <GreenergyLogo isDarkScene={isDarkScene} />
+              <GreenergyLogo isDarkScene={isDarkScene} onClick={onNavigateHome} />
 
-              <SocialLinks isDarkScene={isDarkScene} />
+              <SocialLinks
+                isDarkScene={isDarkScene}
+                isAboutUsActive={false}
+                onAboutUsClick={onNavigateAboutUs}
+              />
             </div>
 
             {/* ONE COMPACT FROSTED GLASS CATEGORY CONTROL: [ ← ]  FAVA BEANS  [ → ] */}
@@ -435,7 +469,7 @@ export const SnackHero: React.FC<SnackHeroProps> = ({
           <header className="relative z-40 hidden lg:flex w-full px-10 py-5 items-center justify-between gap-4 flex-shrink-0 pl-safe pr-safe">
             {/* Left: Consistent Top-Left Official GREENERGY LET'S RAW Logo */}
             <div className="flex items-center gap-6 flex-shrink-0">
-              <GreenergyLogo isDarkScene={isDarkScene} />
+              <GreenergyLogo isDarkScene={isDarkScene} onClick={onNavigateHome} />
             </div>
 
             {/* Center: Product Line Switcher (4 Categories) with Pure Transparent Glass Indicator */}
@@ -501,15 +535,19 @@ export const SnackHero: React.FC<SnackHeroProps> = ({
               </div>
             </nav>
 
-            {/* Right: Social Circular Glass Buttons (Instagram & Facebook) */}
-            <SocialLinks isDarkScene={isDarkScene} />
+            {/* Right: Social Circular Glass Buttons (Instagram & Facebook) + ABOUT US */}
+            <SocialLinks
+              isDarkScene={isDarkScene}
+              isAboutUsActive={false}
+              onAboutUsClick={onNavigateAboutUs}
+            />
           </header>
 
           {/* 3. CLEAN HERO PRODUCT PRESENTATION STAGE: [ ← ]   PRODUCT   [ → ] */}
           <main
             onTouchStart={handleStageTouchStart}
             onTouchEnd={handleStageTouchEnd}
-            className="relative flex-1 flex flex-col items-center justify-center w-full max-w-6xl mx-auto px-2.5 sm:px-6 py-2 sm:py-4 lg:py-0 my-auto min-h-0 pl-safe pr-safe"
+            className="relative flex-1 flex flex-col items-center justify-center w-full max-w-7xl 2xl:max-w-[1560px] mx-auto px-2.5 sm:px-6 py-3 sm:py-5 lg:py-2 my-auto min-h-0 pl-safe pr-safe"
           >
             {/* 3A. QUIET ATMOSPHERIC DEPTH HALO (No background text — clean negative space & subtle light separation) */}
             <div
@@ -517,7 +555,7 @@ export const SnackHero: React.FC<SnackHeroProps> = ({
               className="absolute inset-0 flex items-center justify-center overflow-hidden z-10 pointer-events-none select-none"
             >
               <div
-                className="w-[340px] h-[340px] sm:w-[440px] sm:h-[440px] lg:w-[580px] lg:h-[580px] rounded-full transition-colors duration-500"
+                className="greenergy-halo-stage rounded-full transition-colors duration-500"
                 style={{
                   background: isDarkScene
                     ? 'radial-gradient(circle, rgba(255, 250, 240, 0.08) 0%, rgba(255, 250, 240, 0.02) 48%, transparent 72%)'
@@ -527,189 +565,218 @@ export const SnackHero: React.FC<SnackHeroProps> = ({
             </div>
 
             {/* 3B. CLEAN PRODUCT STAGE: HERO PRODUCT PACKAGING ONLY (No floating clutter) */}
-            <div className="relative z-20 flex flex-col items-center justify-center w-full max-w-lg sm:max-w-xl lg:max-w-2xl">
-              {/* Left Arrow: Previous Product inside current category */}
-              <button
-                type="button"
-                onClick={prevFlavor}
-                style={{
-                  color: currentProduct.textColor,
-                  backgroundColor: isDarkScene
-                    ? 'rgba(255, 255, 255, 0.14)'
-                    : 'rgba(255, 255, 255, 0.36)',
-                  borderColor: isDarkScene
-                    ? 'rgba(255, 255, 255, 0.24)'
-                    : 'rgba(255, 255, 255, 0.65)',
-                }}
-                className="flex absolute left-0 sm:-left-10 md:-left-16 lg:-left-20 xl:-left-28 top-1/2 -translate-y-1/2 z-40 w-11 h-11 sm:w-12 sm:h-12 min-w-[44px] min-h-[44px] rounded-full backdrop-blur-md items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.08)] border hover:scale-105 active:scale-95 transition-transform duration-150 group cursor-pointer"
-                aria-label="Poprzedni produkt"
-              >
-                <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5] opacity-85 group-hover:opacity-100 transition-opacity" />
-              </button>
-
-              {/* Right Arrow: Next Product inside current category */}
-              <button
-                type="button"
-                onClick={nextFlavor}
-                style={{
-                  color: currentProduct.textColor,
-                  backgroundColor: isDarkScene
-                    ? 'rgba(255, 255, 255, 0.14)'
-                    : 'rgba(255, 255, 255, 0.36)',
-                  borderColor: isDarkScene
-                    ? 'rgba(255, 255, 255, 0.24)'
-                    : 'rgba(255, 255, 255, 0.65)',
-                }}
-                className="flex absolute right-0 sm:-right-10 md:-right-16 lg:-right-20 xl:-right-28 top-1/2 -translate-y-1/2 z-40 w-11 h-11 sm:w-12 sm:h-12 min-w-[44px] min-h-[44px] rounded-full backdrop-blur-md items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.08)] border hover:scale-105 active:scale-95 transition-transform duration-150 group cursor-pointer"
-                aria-label="Następny produkt"
-              >
-                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5] opacity-85 group-hover:opacity-100 transition-opacity" />
-              </button>
-
-              {/* 3C. MAIN PRODUCT CENTERSTAGE (z-20)
-                  Restrained, smooth fade + slight slide + subtle scale */}
-              <AnimatePresence mode="popLayout" custom={direction}>
-                <motion.div
-                  key={currentProduct.id + '-package-wrapper'}
-                  custom={direction}
-                  initial={{
-                    opacity: 0,
-                    scale: prefersReducedMotion ? 1 : 0.97,
-                    x: prefersReducedMotion ? 0 : direction * 18,
+            <div className="relative z-20 flex flex-col items-center justify-center w-full">
+              {/* Dedicated Visual Stage Frame: Locks left/right product arrows to the exact vertical center of the product package */}
+              <div className="relative flex items-center justify-center w-full max-w-[540px] sm:max-w-[580px] md:max-w-[650px] lg:max-w-[740px] xl:max-w-[820px] 2xl:max-w-[960px]">
+                {/* Left Arrow: Previous Product inside current category */}
+                <button
+                  type="button"
+                  onClick={prevFlavor}
+                  style={{
+                    color: currentProduct.textColor,
+                    backgroundColor: isDarkScene
+                      ? 'rgba(255, 255, 255, 0.14)'
+                      : 'rgba(255, 255, 255, 0.36)',
+                    borderColor: isDarkScene
+                      ? 'rgba(255, 255, 255, 0.24)'
+                      : 'rgba(255, 255, 255, 0.65)',
                   }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    x: 0,
-                    transition: {
-                      duration: prefersReducedMotion ? 0.22 : 0.46,
-                      ease: SMOOTH_EASE,
-                    },
-                  }}
-                  exit={{
-                    opacity: 0,
-                    scale: prefersReducedMotion ? 1 : 0.97,
-                    x: prefersReducedMotion ? 0 : -direction * 18,
-                    transition: {
-                      duration: prefersReducedMotion ? 0.16 : 0.26,
-                      ease: SMOOTH_EASE,
-                    },
-                  }}
-                  className="relative z-20 flex flex-col items-center justify-center touch-manipulation transform-gpu will-change-transform will-change-opacity"
+                  className="flex absolute left-0 sm:left-1 md:left-0 lg:-left-4 xl:-left-8 2xl:-left-12 top-1/2 -translate-y-1/2 z-40 w-11 h-11 sm:w-12 sm:h-12 2xl:w-14 2xl:h-14 min-w-[44px] min-h-[44px] rounded-full backdrop-blur-md items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.08)] border hover:scale-105 active:scale-95 transition-transform duration-150 group cursor-pointer"
+                  aria-label="Poprzedni produkt"
                 >
-                  {/* VERY SUBTLE, RESTRAINED WEIGHTLESS BREATHING OF THE MAIN PRODUCT */}
+                  <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 2xl:w-7 2xl:h-7 stroke-[2.5] opacity-85 group-hover:opacity-100 transition-opacity" />
+                </button>
+
+                {/* Right Arrow: Next Product inside current category */}
+                <button
+                  type="button"
+                  onClick={nextFlavor}
+                  style={{
+                    color: currentProduct.textColor,
+                    backgroundColor: isDarkScene
+                      ? 'rgba(255, 255, 255, 0.14)'
+                      : 'rgba(255, 255, 255, 0.36)',
+                    borderColor: isDarkScene
+                      ? 'rgba(255, 255, 255, 0.24)'
+                      : 'rgba(255, 255, 255, 0.65)',
+                  }}
+                  className="flex absolute right-0 sm:right-1 md:right-0 lg:-right-4 xl:-right-8 2xl:-right-12 top-1/2 -translate-y-1/2 z-40 w-11 h-11 sm:w-12 sm:h-12 2xl:w-14 2xl:h-14 min-w-[44px] min-h-[44px] rounded-full backdrop-blur-md items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.08)] border hover:scale-105 active:scale-95 transition-transform duration-150 group cursor-pointer"
+                  aria-label="Następny produkt"
+                >
+                  <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 2xl:w-7 2xl:h-7 stroke-[2.5] opacity-85 group-hover:opacity-100 transition-opacity" />
+                </button>
+
+                {/* 3C. MAIN PRODUCT CENTERSTAGE (z-20)
+                    Restrained, smooth fade + slight slide + subtle scale */}
+                <AnimatePresence mode="popLayout" custom={direction}>
                   <motion.div
-                    animate={
-                      prefersReducedMotion
-                        ? {}
-                        : isMobile
-                        ? {
-                            y: [-2, 2, -2],
-                          }
-                        : {
-                            y: [-3, 3, -3],
-                          }
-                    }
-                    transition={{
-                      duration: 6.2,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
+                    key={currentProduct.id + '-package-wrapper'}
+                    custom={direction}
+                    initial={{
+                      opacity: 0,
+                      scale: prefersReducedMotion ? 1 : 0.97,
+                      x: prefersReducedMotion ? 0 : direction * 18,
                     }}
-                    onClick={() => handleProductAction(currentProduct)}
-                    aria-label={`Przejdź do opisu produktu: ${currentProduct.name}`}
-                    className="relative flex flex-col items-center justify-center cursor-pointer group transform-gpu will-change-transform"
+                    animate={{
+                      opacity: 1,
+                      scale: 1,
+                      x: 0,
+                      transition: {
+                        duration: prefersReducedMotion ? 0.22 : 0.46,
+                        ease: SMOOTH_EASE,
+                      },
+                    }}
+                    exit={{
+                      opacity: 0,
+                      scale: prefersReducedMotion ? 1 : 0.97,
+                      x: prefersReducedMotion ? 0 : -direction * 18,
+                      transition: {
+                        duration: prefersReducedMotion ? 0.16 : 0.26,
+                        ease: SMOOTH_EASE,
+                      },
+                    }}
+                    className="relative z-20 flex flex-col items-center justify-center touch-manipulation transform-gpu will-change-transform will-change-opacity"
                   >
-                    {/* Responsive Product Packaging Container:
-                        - Mobile (<768px): ~24% larger dominant hero presence (clamp(288px, 76vw, 365px) × clamp(325px, 56svh, 420px))
-                        - Desktop (>=768px): unchanged desktop hero dimensions */}
-                    <div
-                      className="relative flex items-center justify-center"
-                      style={{
-                        width: isMobile
-                          ? 'clamp(288px, 76vw, 365px)'
-                          : 'clamp(340px, 46vw, 505px)',
-                        height: isMobile
-                          ? 'clamp(325px, 56svh, 420px)'
-                          : 'clamp(360px, 57dvh, 548px)',
+                    {/* VERY SUBTLE, RESTRAINED WEIGHTLESS BREATHING OF THE MAIN PRODUCT */}
+                    <motion.div
+                      animate={
+                        prefersReducedMotion
+                          ? {}
+                          : isMobile
+                          ? {
+                              y: [-2, 2, -2],
+                            }
+                          : {
+                              y: [-3, 3, -3],
+                            }
+                      }
+                      transition={{
+                        duration: 6.2,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
                       }}
+                      onClick={() => {
+                        if (!isComingSoonProduct) {
+                          handleProductAction(currentProduct);
+                        }
+                      }}
+                      aria-label={
+                        isComingSoonProduct
+                          ? `${currentProduct.name} — Coming Soon`
+                          : `Przejdź do opisu produktu: ${currentProduct.name}`
+                      }
+                      className={`relative flex flex-col items-center justify-center ${
+                        isComingSoonProduct ? 'cursor-default' : 'cursor-pointer'
+                      } group transform-gpu will-change-transform`}
                     >
-                      <img
-                        src={currentProduct.productBoxImage}
-                        alt={currentProduct.name}
-                        width={505}
-                        height={548}
-                        loading="eager"
-                        decoding="async"
-                        fetchPriority="high"
-                        className="max-h-full max-w-full w-auto h-auto object-contain drop-shadow-[0_22px_36px_rgba(0,0,0,0.28)] transition-transform duration-500 ease-out md:group-hover:scale-[1.03] select-none pointer-events-none"
+                      {/* Fluid Responsive Product Packaging Stage Box:
+                          Adapts seamlessly across small phones, smartphones, tablets, laptops, desktops, 2K, 4K & ultrawide */}
+                      <div className="greenergy-product-stage-box relative flex items-center justify-center">
+                        <div
+                          className="w-full h-full flex items-center justify-center transition-transform duration-500 ease-out md:group-hover:scale-[1.03] transform-gpu"
+                          style={{
+                            transform: `translateY(${currentProduct.opticalOffsetY || '0%'}) scale(${
+                              currentProduct.opticalScale || 1
+                            })`,
+                          }}
+                        >
+                          {isComingSoonProduct ? (
+                            <PixelatedMosaicPackshot
+                              src={currentProduct.productBoxImage}
+                              alt={currentProduct.name}
+                              className="w-full h-full object-contain object-center drop-shadow-[0_22px_36px_rgba(0,0,0,0.28)] select-none pointer-events-none"
+                            />
+                          ) : (
+                            <img
+                              src={currentProduct.productBoxImage}
+                              alt={currentProduct.name}
+                              loading="eager"
+                              decoding="async"
+                              fetchPriority="high"
+                              className="w-full h-full object-contain object-center drop-shadow-[0_22px_36px_rgba(0,0,0,0.28)] select-none pointer-events-none"
+                            />
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Soft diffused floor contact shadow beneath product */}
+                      <div
+                        className="absolute -bottom-4 sm:-bottom-6 left-1/2 -translate-x-1/2 w-48 sm:w-64 md:w-80 lg:w-96 2xl:w-[440px] h-7 sm:h-9 rounded-full pointer-events-none opacity-25 transition-colors duration-500"
+                        style={{
+                          background: `radial-gradient(ellipse 50% 50% at 50% 50%, ${currentProduct.accentColor}66 0%, transparent 75%)`,
+                        }}
                       />
-                    </div>
-
-                    {/* Soft diffused floor contact shadow beneath product */}
-                    <div
-                      className="absolute -bottom-4 sm:-bottom-6 left-1/2 -translate-x-1/2 w-48 sm:w-64 md:w-80 lg:w-96 h-7 sm:h-9 rounded-full pointer-events-none opacity-25 transition-colors duration-500"
-                      style={{
-                        background: `radial-gradient(ellipse 50% 50% at 50% 50%, ${currentProduct.accentColor}66 0%, transparent 75%)`,
-                      }}
-                    />
+                    </motion.div>
                   </motion.div>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* 3D. SUBTITLE DESCRIPTION TEXT IN POLISH (Underneath the Product on Desktop) */}
-              <div className="relative z-20 mt-2 sm:mt-3 hidden lg:block text-center max-w-md px-3">
-                <AnimatePresence mode="wait">
-                  <motion.p
-                    key={currentProduct.id + '-tagline'}
-                    initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -6 }}
-                    transition={{ duration: 0.28, ease: SMOOTH_EASE }}
-                    className="text-xs font-bold uppercase tracking-[0.12em] leading-snug transition-colors duration-500 drop-shadow-xs line-clamp-2 transform-gpu will-change-transform will-change-opacity"
-                    style={{ color: currentProduct.textColor }}
-                  >
-                    {currentProduct.tagline}
-                  </motion.p>
                 </AnimatePresence>
               </div>
+
+              {/* 3D. SUBTITLE DESCRIPTION TEXT IN POLISH (Underneath the Product on Desktop) */}
+              {!isComingSoonProduct && (
+                <div className="relative z-20 mt-2.5 sm:mt-3.5 hidden lg:block text-center max-w-md xl:max-w-lg px-3">
+                  <AnimatePresence mode="wait">
+                    <motion.p
+                      key={currentProduct.id + '-tagline'}
+                      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -6 }}
+                      transition={{ duration: 0.28, ease: SMOOTH_EASE }}
+                      className="text-xs 2xl:text-[13px] font-bold uppercase tracking-[0.12em] leading-snug transition-colors duration-500 drop-shadow-xs line-clamp-2 transform-gpu will-change-transform will-change-opacity"
+                      style={{ color: currentProduct.textColor }}
+                    >
+                      {currentProduct.tagline}
+                    </motion.p>
+                  </AnimatePresence>
+                </div>
+              )}
             </div>
           </main>
 
-          {/* 4. DESKTOP BOTTOM CTA BAR (z-40, Desktop only) */}
-          <footer className="relative z-40 hidden lg:flex w-full px-12 py-4 items-center justify-center flex-shrink-0 pl-safe pr-safe">
-            <div className="flex items-center gap-2.5">
-              <button
-                type="button"
-                onClick={() => handleProductAction(currentProduct)}
-                className="w-12 h-12 min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center text-white transition-transform duration-200 hover:scale-110 active:scale-95 shadow-lg flex-shrink-0 cursor-pointer"
-                style={{ backgroundColor: currentProduct.accentColor }}
-                aria-label="Dowiedz się więcej"
-              >
-                <ArrowUpRight className="w-6 h-6 stroke-[2.5] text-white" />
-              </button>
-
-              <button
-                type="button"
-                id="btn-learn-more"
-                onClick={() => handleProductAction(currentProduct)}
-                className="h-12 min-h-[44px] px-9 rounded-full text-white font-extrabold text-sm tracking-wider uppercase flex items-center gap-2 transition-transform duration-200 hover:scale-105 active:scale-95 shadow-lg group relative overflow-hidden cursor-pointer"
-                style={{ backgroundColor: currentProduct.accentColor }}
-                aria-label="Dowiedz się więcej"
-              >
-                <span className="relative z-10 flex items-center gap-2 text-white">
-                  <span>DOWIEDZ SIĘ WIĘCEJ</span>
-                </span>
-
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-              </button>
-            </div>
+          {/* 4. BOTTOM PRODUCT CTA BAR (z-40, Desktop & Mobile) */}
+          <footer className="relative z-40 flex w-full px-4 sm:px-8 lg:px-12 pt-1 pb-3 sm:py-3.5 lg:py-4 items-center justify-center flex-shrink-0 pl-safe pr-safe">
+            <button
+              type="button"
+              id="btn-learn-more"
+              onClick={() => {
+                if (!isComingSoonProduct) {
+                  handleProductAction(currentProduct);
+                }
+              }}
+              data-dark-scene={isDarkScene ? 'true' : 'false'}
+              style={{ color: currentProduct.textColor }}
+              className={`greenergy-cta-glass-btn h-11 sm:h-12 min-h-[44px] px-7 sm:px-9 rounded-full inline-flex items-center justify-center ${
+                isComingSoonProduct ? 'cursor-default' : 'cursor-pointer'
+              } select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80`}
+              aria-label={isComingSoonProduct ? 'Coming Soon' : 'Dowiedz się więcej'}
+            >
+              <span className="text-xs xs:text-[13px] font-black uppercase tracking-[0.12em] whitespace-nowrap text-center select-none">
+                {isComingSoonProduct ? 'COMING SOON' : 'DOWIEDZ SIĘ WIĘCEJ'}
+              </span>
+            </button>
           </footer>
         </div>
 
         {/* 5. INLINE PRODUCT INFORMATION SECTION (Immediately below the product presentation) */}
-        <ProductInlineInfo
-          product={currentProduct}
-          sectionRef={productInfoRef}
+        {!isComingSoonProduct && (
+          <ProductInlineInfo
+            product={currentProduct}
+            sectionRef={productInfoRef}
+          />
+        )}
+
+        {/* 6. WEBSITE FOOTER */}
+        <Footer
+          activePage="home"
+          activeCategory={activeCategory}
+          onNavigateHome={() => {
+            if (onNavigateHome) onNavigateHome();
+          }}
+          onNavigateAboutUs={() => {
+            if (onNavigateAboutUs) onNavigateAboutUs();
+          }}
+          onSelectCategory={(category) => {
+            handleCategorySwitch(category);
+          }}
         />
       </motion.div>
     </div>

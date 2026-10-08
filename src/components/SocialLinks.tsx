@@ -4,6 +4,10 @@ interface SocialLinksProps {
   /** Whether the current scene has a darker or high-contrast background */
   isDarkScene?: boolean;
   className?: string;
+  /** Whether the current route is /about-us */
+  isAboutUsActive?: boolean;
+  /** Handler when ABOUT US is clicked */
+  onAboutUsClick?: () => void;
 }
 
 const INSTAGRAM_SVG_FALLBACK =
@@ -54,53 +58,106 @@ const SOCIAL_ITEMS = [
 export const SocialLinks: React.FC<SocialLinksProps> = ({
   isDarkScene = false,
   className = '',
+  isAboutUsActive = false,
+  onAboutUsClick,
 }) => {
   const glassBadgeClass = isDarkScene
     ? 'bg-[#FAF8F3]/82 sm:bg-[#FAF8F3]/76 group-hover:bg-[#FAF8F3]/92 border border-white/75 shadow-[0_4px_18px_rgba(0,0,0,0.12)]'
     : 'bg-white/76 sm:bg-white/62 group-hover:bg-white/88 border border-white/75 shadow-[0_4px_16px_rgba(0,0,0,0.05)]';
 
+  const activePillGlassClass = isDarkScene
+    ? 'bg-[#FAF8F3]/96 border border-white/95 shadow-[0_6px_20px_rgba(0,0,0,0.16)]'
+    : 'bg-white/94 border border-white/95 shadow-[0_6px_20px_rgba(27,45,31,0.10)]';
+
   const haloBackground = isDarkScene
     ? 'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 100%)'
     : 'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0) 100%)';
 
-  return (
-    <div className={`flex items-center gap-1 sm:gap-2 flex-shrink-0 ${className}`}>
-      {SOCIAL_ITEMS.map((item) => (
-        <a
-          key={item.id}
-          href={item.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={item.label}
-          className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full inline-flex items-center justify-center group cursor-pointer active:scale-95 transition-transform duration-200 focus-visible:outline-none"
-        >
-          <span
-            className={`relative w-9 h-9 sm:w-10 sm:h-10 rounded-full inline-flex items-center justify-center backdrop-blur-md transition-all duration-300 lg:group-hover:scale-105 ${glassBadgeClass}`}
-          >
-            {/* Subtle feathered contrast halo behind the vector icon (matches GreenergyLogo) */}
-            <span
-              aria-hidden="true"
-              className="absolute inset-0.5 rounded-full pointer-events-none"
-              style={{ background: haloBackground }}
-            />
+  const pillHaloBackground = isDarkScene
+    ? 'radial-gradient(ellipse 85% 75% at 50% 50%, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 100%)'
+    : 'radial-gradient(ellipse 85% 75% at 50% 50%, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0) 100%)';
 
-            <img
-              src={item.iconSrc}
-              alt=""
-              width={18}
-              height={18}
-              decoding="async"
-              onError={(e) => {
-                const target = e.currentTarget;
-                if (target.src !== item.fallbackSrc) {
-                  target.src = item.fallbackSrc;
-                }
-              }}
-              className="relative z-10 w-[17px] h-[17px] sm:w-[18px] sm:h-[18px] object-contain select-none pointer-events-none opacity-90 group-hover:opacity-100 transition-opacity duration-200"
-            />
+  const handleAboutClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
+      return;
+    }
+    if (onAboutUsClick) {
+      e.preventDefault();
+      onAboutUsClick();
+    }
+  };
+
+  return (
+    <div className={`flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0 ${className}`}>
+      {/* Instagram & Facebook Circular Frosted-Glass Icons */}
+      <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+        {SOCIAL_ITEMS.map((item) => (
+          <a
+            key={item.id}
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={item.label}
+            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full inline-flex items-center justify-center group cursor-pointer active:scale-95 transition-transform duration-200 focus-visible:outline-none"
+          >
+            <span
+              className={`relative w-9 h-9 sm:w-10 sm:h-10 rounded-full inline-flex items-center justify-center backdrop-blur-md transition-all duration-300 lg:group-hover:scale-105 ${glassBadgeClass}`}
+            >
+              {/* Subtle feathered contrast halo behind the vector icon (matches GreenergyLogo) */}
+              <span
+                aria-hidden="true"
+                className="absolute inset-0.5 rounded-full pointer-events-none"
+                style={{ background: haloBackground }}
+              />
+
+              <img
+                src={item.iconSrc}
+                alt=""
+                width={18}
+                height={18}
+                decoding="async"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (target.src !== item.fallbackSrc) {
+                    target.src = item.fallbackSrc;
+                  }
+                }}
+                className="relative z-10 w-[17px] h-[17px] sm:w-[18px] sm:h-[18px] object-contain select-none pointer-events-none opacity-90 group-hover:opacity-100 transition-opacity duration-200"
+              />
+            </span>
+          </a>
+        ))}
+      </div>
+
+      {/* ABOUT US Compact Frosted-Glass Pill Button */}
+      <a
+        href="/about-us"
+        onClick={handleAboutClick}
+        aria-label="About Us"
+        aria-current={isAboutUsActive ? 'page' : undefined}
+        className="min-h-[44px] py-1 rounded-full inline-flex items-center justify-center group cursor-pointer active:scale-95 transition-transform duration-200 focus-visible:outline-none"
+      >
+        <span
+          className={`relative h-9 sm:h-10 px-3.5 sm:px-4 rounded-full inline-flex items-center justify-center backdrop-blur-md transition-all duration-300 lg:group-hover:scale-[1.03] ${
+            isAboutUsActive ? activePillGlassClass : glassBadgeClass
+          }`}
+        >
+          {/* Subtle feathered contrast halo behind the typography (matches GreenergyLogo & SocialLinks) */}
+          <span
+            aria-hidden="true"
+            className="absolute inset-0.5 rounded-full pointer-events-none"
+            style={{ background: pillHaloBackground }}
+          />
+
+          <span
+            className={`relative z-10 text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.13em] text-[#1B2D1F] whitespace-nowrap select-none transition-opacity duration-200 ${
+              isAboutUsActive ? 'opacity-100' : 'opacity-90 group-hover:opacity-100'
+            }`}
+          >
+            ABOUT US
           </span>
-        </a>
-      ))}
+        </span>
+      </a>
     </div>
   );
 };

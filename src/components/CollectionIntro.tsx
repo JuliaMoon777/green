@@ -124,16 +124,6 @@ const STILL_LIFE_FAMILY_ITEMS: StillLifeProductItem[] = [
 
   // ================= BACK-ROW FAMILY GROUPING (Depth & Breathing Room) =================
   {
-    id: 'protein-cookies-display-box',
-    name: 'Protein Cookies Display Box',
-    image: '/products/protein-cookies/protein-cookies-display-box.webp',
-    tier: 'back-row',
-    zIndex: 16,
-    revealDelay: 0.19,
-    desktop: { x: 0, y: -62, scale: 0.92, rotate: 0 },
-    mobile: { x: 0, y: -58, scale: 0.80, rotate: 0 },
-  },
-  {
     id: 'protein-cookies-double-chocolate',
     name: 'Protein Cookies Double Chocolate',
     image: '/products/protein-cookies/protein-cookies-double-chocolate.webp',
@@ -301,8 +291,8 @@ export const CollectionIntro: React.FC<CollectionIntroProps> = ({
     ? STILL_LIFE_FAMILY_ITEMS.filter((item) => !item.hideOnMobile)
     : STILL_LIFE_FAMILY_ITEMS;
 
-  const itemWidth = isMobile ? 'clamp(175px, 42vw, 235px)' : 'clamp(240px, 25vw, 360px)';
-  const itemHeight = isMobile ? 'clamp(195px, 38dvh, 265px)' : 'clamp(270px, 41dvh, 405px)';
+  const itemWidth = isMobile ? 'clamp(175px, 42vw, 235px)' : 'clamp(240px, 24vw, 420px)';
+  const itemHeight = isMobile ? 'clamp(195px, 38dvh, 265px)' : 'clamp(270px, 40dvh, 460px)';
 
   return (
     <motion.div

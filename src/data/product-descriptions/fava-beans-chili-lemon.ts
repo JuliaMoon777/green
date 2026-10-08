@@ -15,9 +15,11 @@ export const favaBeansChiliLemon: ProductDescriptionData = {
   category: 'Fava Beans Chips',
   name: 'Chili & Lemon',
 
-  shortDescription: '',
-  description: '',
-  tasteProfile: '',
+  shortDescription:
+    'A vibrant combination of fiery chili heat and the bright, refreshing acidity of zesty lemon.',
+  description:
+    'Experience the bold contrast of Chili & Lemon Fava Beans Chips. The lively citrus freshness of lemon meets the warm, spicy kick of chili peppers, creating an energizing and expressive flavor experience.',
+  tasteProfile: 'Spicy · Zesty · Bold',
   ingredients: '',
   additionalInfo: '',
   notes: ''

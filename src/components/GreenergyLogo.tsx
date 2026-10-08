@@ -8,6 +8,10 @@ interface GreenergyLogoProps {
   isDarkScene?: boolean;
   /** Option to render bare image if ever needed; defaults to true (subtle glass protection) */
   withGlassBadge?: boolean;
+  /** Optional click handler (e.g., to navigate back to the homepage) */
+  onClick?: () => void;
+  /** Optional href when rendered as a link */
+  href?: string;
 }
 
 /**
@@ -23,7 +27,18 @@ export const GreenergyLogo: React.FC<GreenergyLogoProps> = ({
   alt = 'GREENERGY',
   isDarkScene = false,
   withGlassBadge = true,
+  onClick,
+  href = '/',
 }) => {
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!onClick) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
+      return;
+    }
+    e.preventDefault();
+    onClick();
+  };
+
   if (!withGlassBadge) {
     return (
       <img
@@ -34,14 +49,14 @@ export const GreenergyLogo: React.FC<GreenergyLogoProps> = ({
     );
   }
 
-  return (
-    <div
-      className={`relative inline-flex items-center justify-center flex-shrink-0 select-none rounded-2xl px-2.5 py-1.5 sm:px-3.5 sm:py-2 backdrop-blur-md transition-colors duration-300 ${
-        isDarkScene
-          ? 'bg-[#FAF8F3]/82 sm:bg-[#FAF8F3]/76 border border-white/75 shadow-[0_4px_18px_rgba(0,0,0,0.12)]'
-          : 'bg-white/76 sm:bg-white/60 border border-white/75 shadow-[0_4px_16px_rgba(0,0,0,0.05)]'
-      } ${containerClassName}`}
-    >
+  const badgeClasses = `relative inline-flex items-center justify-center flex-shrink-0 select-none rounded-2xl px-2.5 py-1.5 sm:px-3.5 sm:py-2 backdrop-blur-md transition-all duration-300 ${
+    isDarkScene
+      ? 'bg-[#FAF8F3]/82 sm:bg-[#FAF8F3]/76 border border-white/75 shadow-[0_4px_18px_rgba(0,0,0,0.12)]'
+      : 'bg-white/76 sm:bg-white/60 border border-white/75 shadow-[0_4px_16px_rgba(0,0,0,0.05)]'
+  } ${onClick ? 'cursor-pointer hover:bg-white/88 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2D1F]/40' : ''} ${containerClassName}`;
+
+  const innerContent = (
+    <>
       {/* Subtle feathered contrast halo behind the logo (soft, diffused, low opacity, no neon glow) */}
       <div
         aria-hidden="true"
@@ -59,6 +74,21 @@ export const GreenergyLogo: React.FC<GreenergyLogoProps> = ({
         alt={alt}
         className={`relative z-10 object-contain flex-shrink-0 select-none pointer-events-none ${className}`}
       />
-    </div>
+    </>
   );
+
+  if (onClick) {
+    return (
+      <a
+        href={href}
+        onClick={handleAnchorClick}
+        aria-label="GREENERGY — Return to homepage"
+        className={badgeClasses}
+      >
+        {innerContent}
+      </a>
+    );
+  }
+
+  return <div className={badgeClasses}>{innerContent}</div>;
 };

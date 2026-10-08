@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/((?!products/|backgrounds/|brand/|effects/|assets/|cookie-realistic\\.|favicon\\.).*)",
+      "source": "/((?!products/|backgrounds/|brand/|effects/|social/|assets/|cookie-realistic\\.|favicon\\.).*)",
       "destination": "/index.html"
     }
   ]

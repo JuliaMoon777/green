@@ -2,12 +2,12 @@ import { favaBeansChiliLemon, ProductDescriptionData } from './fava-beans-chili-
 import { favaBeansHoneyMustard } from './fava-beans-honey-mustard';
 import { favaBeansSweetHerbsOlives } from './fava-beans-sweet-herbs-olives';
 import { favaBeansTomatoBasil } from './fava-beans-tomato-basil';
+import { favaBeansSummerSpices } from './fava-beans-summer-spices';
 import { chickpeaLemonPepper } from './chickpea-lemon-pepper';
 import { chickpeaSalted } from './chickpea-salted';
 import { proteinCookiesAppleCinnamon } from './protein-cookies-apple-cinnamon';
 import { proteinCookiesCreamyButterGraham } from './protein-cookies-creamy-butter-graham';
 import { proteinCookiesDoubleChocolate } from './protein-cookies-double-chocolate';
-import { proteinCookiesDisplayBox } from './protein-cookies-display-box';
 import { peanutsFavaRedThai } from './peanuts-fava-red-thai';
 import { peanutsFavaSweetMustard } from './peanuts-fava-sweet-mustard';
 
@@ -18,12 +18,12 @@ export {
   favaBeansHoneyMustard,
   favaBeansSweetHerbsOlives,
   favaBeansTomatoBasil,
+  favaBeansSummerSpices,
   chickpeaLemonPepper,
   chickpeaSalted,
   proteinCookiesAppleCinnamon,
   proteinCookiesCreamyButterGraham,
   proteinCookiesDoubleChocolate,
-  proteinCookiesDisplayBox,
   peanutsFavaRedThai,
   peanutsFavaSweetMustard,
 };
@@ -33,12 +33,12 @@ export const ALL_PRODUCT_DESCRIPTIONS: ProductDescriptionData[] = [
   favaBeansHoneyMustard,
   favaBeansSweetHerbsOlives,
   favaBeansTomatoBasil,
+  favaBeansSummerSpices,
   chickpeaLemonPepper,
   chickpeaSalted,
   proteinCookiesAppleCinnamon,
   proteinCookiesCreamyButterGraham,
   proteinCookiesDoubleChocolate,
-  proteinCookiesDisplayBox,
   peanutsFavaRedThai,
   peanutsFavaSweetMustard,
 ];
@@ -56,6 +56,9 @@ export const PRODUCT_DESCRIPTIONS_BY_ID: Record<string, ProductDescriptionData> 
   'fava-beans-tomato-basil': favaBeansTomatoBasil,
   'tomato-basil': favaBeansTomatoBasil,
 
+  'fava-beans-summer-spices': favaBeansSummerSpices,
+  'summer-spices': favaBeansSummerSpices,
+
   'chickpea-lemon-pepper': chickpeaLemonPepper,
   'chickpea-salted': chickpeaSalted,
 
@@ -67,8 +70,6 @@ export const PRODUCT_DESCRIPTIONS_BY_ID: Record<string, ProductDescriptionData> 
 
   'protein-cookies-double-chocolate': proteinCookiesDoubleChocolate,
   'cookie-double-chocolate': proteinCookiesDoubleChocolate,
-
-  'protein-cookies-display-box': proteinCookiesDisplayBox,
 
   'peanuts-fava-red-thai': peanutsFavaRedThai,
   'peanuts-fava-sweet-mustard': peanutsFavaSweetMustard,

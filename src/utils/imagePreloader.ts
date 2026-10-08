@@ -5,6 +5,7 @@ import {
   PEANUTS_FAVA_PRODUCTS,
   GreenergyProduct,
 } from '../data/flavors';
+import { INTRO_BACKDROP_DATA_URI } from '../assets/introBackdropAsset';
 
 const decodedUrls = new Set<string>();
 const inflightPromises = new Map<string, Promise<void>>();
@@ -17,10 +18,15 @@ export const ALL_COLLECTION_PRODUCTS: GreenergyProduct[] = [
 ];
 
 export const EDITORIAL_CLEAN_CAMPAIGN_BG =
-  '/backgrounds/bg-clean-campaign-backdrop.webp';
+  '/backgrounds/greenergy-intro-bg.webp';
 
-export const EDITORIAL_CLEAN_CAMPAIGN_BG_FALLBACK =
-  '/backgrounds/bg-clean-campaign-backdrop.jpg';
+export const EDITORIAL_CLEAN_CAMPAIGN_BG_JPG =
+  '/backgrounds/greenergy-intro-bg.jpg';
+
+export const EDITORIAL_CLEAN_CAMPAIGN_BG_SVG =
+  '/backgrounds/greenergy-intro-bg.svg';
+
+export const EDITORIAL_CLEAN_CAMPAIGN_BG_FALLBACK = INTRO_BACKDROP_DATA_URI;
 
 /**
  * Returns the .jpg fallback path in /backgrounds/ for any .webp background URL.

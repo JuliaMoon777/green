@@ -4,7 +4,6 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowUpRight,
-  Instagram,
 } from 'lucide-react';
 import {
   FAVA_BEANS_PRODUCTS,
@@ -14,6 +13,7 @@ import {
   GreenergyProduct,
 } from '../data/flavors';
 import { GreenergyLogo } from './GreenergyLogo';
+import { SocialLinks } from './SocialLinks';
 import { ProductBackgroundScene } from './ProductBackgroundScene';
 import { ProductInlineInfo } from './ProductInlineInfo';
 import {
@@ -333,37 +333,11 @@ export const SnackHero: React.FC<SnackHeroProps> = ({
         <div className="relative z-10 w-full min-h-[75svh] sm:min-h-[82svh] lg:min-h-[100svh] flex flex-col justify-between pt-safe">
           {/* 2A. SIMPLIFIED MOBILE & NARROW TABLET HEADER + GLASS CATEGORY CONTROL (< 1024px) */}
           <header className="relative z-40 w-full lg:hidden pt-2 sm:pt-3.5 pb-1 flex flex-col items-center gap-2 flex-shrink-0">
-            {/* Top Row: Consistent Top-Left GREENERGY Logo + Subtle Social Icons */}
+            {/* Top Row: Consistent Top-Left GREENERGY Logo + Subtle Glass Social Icons */}
             <div className="w-full px-4 sm:px-6 pl-safe pr-safe flex items-center justify-between">
               <GreenergyLogo isDarkScene={isDarkScene} />
 
-              <div className="flex items-center gap-1.5">
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center active:scale-95 transition-transform duration-150"
-                  style={{ color: currentProduct.textColor }}
-                  aria-label="Instagram @greenergy"
-                >
-                  <span className="w-8 h-8 rounded-full bg-white/10 border border-white/15 flex items-center justify-center">
-                    <Instagram className="w-3.5 h-3.5 opacity-80" />
-                  </span>
-                </a>
-
-                <a
-                  href="https://tiktok.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center active:scale-95 transition-transform duration-150"
-                  style={{ color: currentProduct.textColor }}
-                  aria-label="TikTok @greenergy"
-                >
-                  <span className="w-8 h-8 rounded-full bg-white/10 border border-white/15 flex items-center justify-center font-black text-[11px] opacity-80">
-                    tt
-                  </span>
-                </a>
-              </div>
+              <SocialLinks isDarkScene={isDarkScene} />
             </div>
 
             {/* ONE COMPACT FROSTED GLASS CATEGORY CONTROL: [ ← ]  FAVA BEANS  [ → ] */}
@@ -527,30 +501,8 @@ export const SnackHero: React.FC<SnackHeroProps> = ({
               </div>
             </nav>
 
-            {/* Right: Social Circular Buttons */}
-            <div className="flex items-center gap-2.5">
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-md flex items-center justify-center transition-transform duration-200 hover:scale-110 active:scale-95 shadow-xs border border-white/20 hover:border-white/50 group cursor-pointer"
-                style={{ color: currentProduct.textColor }}
-                aria-label="Instagram @greenergy"
-              >
-                <Instagram className="w-5 h-5 opacity-75 group-hover:opacity-100" />
-              </a>
-
-              <a
-                href="https://tiktok.com"
-                target="_blank"
-                rel="noreferrer"
-                className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-md flex items-center justify-center transition-transform duration-200 hover:scale-110 active:scale-95 shadow-xs font-black text-sm border border-white/20 hover:border-white/50 group cursor-pointer"
-                style={{ color: currentProduct.textColor }}
-                aria-label="TikTok @greenergy"
-              >
-                <span className="opacity-75 group-hover:opacity-100">tt</span>
-              </a>
-            </div>
+            {/* Right: Social Circular Glass Buttons (Instagram & Facebook) */}
+            <SocialLinks isDarkScene={isDarkScene} />
           </header>
 
           {/* 3. CLEAN HERO PRODUCT PRESENTATION STAGE: [ ← ]   PRODUCT   [ → ] */}

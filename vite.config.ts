@@ -3,8 +3,20 @@ import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
 import {defineConfig, Plugin} from 'vite';
+import {INTRO_BACKDROP_WEBP_BASE64} from './src/assets/introBackdropAsset';
+
+const INTRO_BACKDROP_TARGETS = [
+  'greenergy-intro-bg.webp',
+  'greenergy-intro-bg.jpg',
+  'bg-clean-campaign-backdrop.webp',
+  'bg-clean-campaign-backdrop.jpg',
+];
 
 const BACKGROUND_ASSET_MAP: Array<{src: string; dest: string}> = [
+  {
+    src: 'src/assets/images/greenergy_clean_campaign_backdrop_1791375708673.jpg',
+    dest: 'public/backgrounds/greenergy-intro-bg.jpg',
+  },
   {
     src: 'src/assets/images/greenergy_clean_campaign_backdrop_1791375708673.jpg',
     dest: 'public/backgrounds/bg-clean-campaign-backdrop.jpg',
@@ -108,13 +120,25 @@ const BACKGROUND_ASSET_MAP: Array<{src: string; dest: string}> = [
 ];
 
 function ensurePublicBackgrounds(): Plugin {
+  const writeIntroBackdropFiles = (targetDir: string) => {
+    if (!fs.existsSync(targetDir)) {
+      fs.mkdirSync(targetDir, {recursive: true});
+    }
+    const introBuffer = Buffer.from(INTRO_BACKDROP_WEBP_BASE64, 'base64');
+    for (const filename of INTRO_BACKDROP_TARGETS) {
+      const filePath = path.join(targetDir, filename);
+      if (!fs.existsSync(filePath) || fs.statSync(filePath).size === 0) {
+        fs.writeFileSync(filePath, introBuffer);
+      }
+    }
+  };
+
   return {
     name: 'ensure-public-backgrounds',
     configResolved() {
       const bgDir = path.resolve(__dirname, 'public/backgrounds');
-      if (!fs.existsSync(bgDir)) {
-        fs.mkdirSync(bgDir, {recursive: true});
-      }
+      writeIntroBackdropFiles(bgDir);
+
       for (const {src, dest} of BACKGROUND_ASSET_MAP) {
         const srcPath = path.resolve(__dirname, src);
         const destJpgPath = path.resolve(__dirname, dest);
@@ -131,6 +155,10 @@ function ensurePublicBackgrounds(): Plugin {
           }
         }
       }
+    },
+    closeBundle() {
+      const distBgDir = path.resolve(__dirname, 'dist/backgrounds');
+      writeIntroBackdropFiles(distBgDir);
     },
   };
 }

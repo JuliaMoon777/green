@@ -4,6 +4,8 @@ import { GreenergyLogo } from './GreenergyLogo';
 import {
   preloadIntroCollectionPackshots,
   EDITORIAL_CLEAN_CAMPAIGN_BG,
+  EDITORIAL_CLEAN_CAMPAIGN_BG_JPG,
+  EDITORIAL_CLEAN_CAMPAIGN_BG_SVG,
   EDITORIAL_CLEAN_CAMPAIGN_BG_FALLBACK,
 } from '../utils/imagePreloader';
 
@@ -330,6 +332,10 @@ export const CollectionIntro: React.FC<CollectionIntroProps> = ({
           opacity: { duration: phase === 'transitioning' ? 0.55 : 0.65, ease: SMOOTH_EASE },
         }}
         className="absolute inset-0 pointer-events-none overflow-hidden transform-gpu will-change-transform will-change-opacity"
+        style={{
+          background:
+            'linear-gradient(165deg, #FBF7EE 0%, #F4ECE0 46%, #E8D9C5 100%)',
+        }}
       >
         <img
           src={backdropSrc}
@@ -337,8 +343,12 @@ export const CollectionIntro: React.FC<CollectionIntroProps> = ({
           decoding="async"
           loading="eager"
           onError={() => {
-            if (backdropSrc !== EDITORIAL_CLEAN_CAMPAIGN_BG_FALLBACK) {
+            if (backdropSrc === EDITORIAL_CLEAN_CAMPAIGN_BG) {
               setBackdropSrc(EDITORIAL_CLEAN_CAMPAIGN_BG_FALLBACK);
+            } else if (backdropSrc === EDITORIAL_CLEAN_CAMPAIGN_BG_FALLBACK) {
+              setBackdropSrc(EDITORIAL_CLEAN_CAMPAIGN_BG_JPG);
+            } else if (backdropSrc !== EDITORIAL_CLEAN_CAMPAIGN_BG_SVG) {
+              setBackdropSrc(EDITORIAL_CLEAN_CAMPAIGN_BG_SVG);
             }
           }}
           className="absolute inset-0 w-full h-full object-cover object-center"

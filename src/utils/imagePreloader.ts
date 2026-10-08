@@ -17,7 +17,21 @@ export const ALL_COLLECTION_PRODUCTS: GreenergyProduct[] = [
 ];
 
 export const EDITORIAL_CLEAN_CAMPAIGN_BG =
-  '/src/assets/images/greenergy_clean_campaign_backdrop_1791375708673.jpg';
+  '/backgrounds/bg-clean-campaign-backdrop.webp';
+
+export const EDITORIAL_CLEAN_CAMPAIGN_BG_FALLBACK =
+  '/backgrounds/bg-clean-campaign-backdrop.jpg';
+
+/**
+ * Returns the .jpg fallback path in /backgrounds/ for any .webp background URL.
+ */
+export const getBackgroundFallbackUrl = (url: string): string => {
+  if (!url) return '';
+  if (url.endsWith('.webp')) {
+    return url.slice(0, -5) + '.jpg';
+  }
+  return url;
+};
 
 /**
  * Preloads a single image and decodes it into memory for zero-jank rendering.

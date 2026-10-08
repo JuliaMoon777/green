@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { GreenergyProduct } from '../data/flavors';
-import { preloadImage } from '../utils/imagePreloader';
+import { preloadImage, getBackgroundFallbackUrl } from '../utils/imagePreloader';
 
 interface ProductBackgroundSceneProps {
   currentProduct: GreenergyProduct;
@@ -16,6 +16,7 @@ export const ProductBackgroundScene: React.FC<ProductBackgroundSceneProps> = Rea
       if (typeof window === 'undefined') return false;
       return window.innerWidth < 768 || window.innerHeight > window.innerWidth * 1.05;
     });
+    const [failedUrls, setFailedUrls] = useState<Record<string, boolean>>({});
 
     useEffect(() => {
       let rafId: number | null = null;
@@ -35,9 +36,21 @@ export const ProductBackgroundScene: React.FC<ProductBackgroundSceneProps> = Rea
       };
     }, []);
 
-    const activeBackgroundUrl = isVerticalViewport
+    const primaryBackgroundUrl = isVerticalViewport
       ? currentProduct.mobileBackgroundImage || currentProduct.backgroundImage
       : currentProduct.backgroundImage;
+
+    const jpgFallbackUrl = getBackgroundFallbackUrl(primaryBackgroundUrl);
+    const desktopFallbackUrl = getBackgroundFallbackUrl(currentProduct.backgroundImage);
+
+    let activeBackgroundUrl = primaryBackgroundUrl;
+    if (failedUrls[activeBackgroundUrl]) {
+      activeBackgroundUrl = !failedUrls[jpgFallbackUrl]
+        ? jpgFallbackUrl
+        : !failedUrls[currentProduct.backgroundImage]
+        ? currentProduct.backgroundImage
+        : desktopFallbackUrl;
+    }
 
     // Preload current and adjacent background scene images matching the active viewport orientation
     useEffect(() => {
@@ -82,10 +95,16 @@ export const ProductBackgroundScene: React.FC<ProductBackgroundSceneProps> = Rea
               alt=""
               width={isVerticalViewport ? 1080 : 1920}
               height={isVerticalViewport ? 1920 : 1080}
-              referrerPolicy="no-referrer"
               loading="eager"
               decoding="async"
               fetchPriority="high"
+              onError={() => {
+                setFailedUrls((prev) =>
+                  prev[activeBackgroundUrl]
+                    ? prev
+                    : { ...prev, [activeBackgroundUrl]: true }
+                );
+              }}
               className="w-full h-full object-cover object-center opacity-[0.82] select-none pointer-events-none"
             />
           </motion.div>

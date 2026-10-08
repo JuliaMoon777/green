@@ -4,6 +4,7 @@ import { GreenergyLogo } from './GreenergyLogo';
 import {
   preloadIntroCollectionPackshots,
   EDITORIAL_CLEAN_CAMPAIGN_BG,
+  EDITORIAL_CLEAN_CAMPAIGN_BG_FALLBACK,
 } from '../utils/imagePreloader';
 
 interface CollectionIntroProps {
@@ -190,6 +191,7 @@ export const CollectionIntro: React.FC<CollectionIntroProps> = ({
   });
   const [assetsReady, setAssetsReady] = useState(false);
   const [phase, setPhase] = useState<'showcase' | 'transitioning'>('showcase');
+  const [backdropSrc, setBackdropSrc] = useState<string>(EDITORIAL_CLEAN_CAMPAIGN_BG);
 
   const completedRef = useRef(false);
   const transitionStartedRef = useRef(false);
@@ -330,11 +332,15 @@ export const CollectionIntro: React.FC<CollectionIntroProps> = ({
         className="absolute inset-0 pointer-events-none overflow-hidden transform-gpu will-change-transform will-change-opacity"
       >
         <img
-          src={EDITORIAL_CLEAN_CAMPAIGN_BG}
+          src={backdropSrc}
           alt="Warm sunlit natural stone and linen editorial backdrop"
-          referrerPolicy="no-referrer"
           decoding="async"
           loading="eager"
+          onError={() => {
+            if (backdropSrc !== EDITORIAL_CLEAN_CAMPAIGN_BG_FALLBACK) {
+              setBackdropSrc(EDITORIAL_CLEAN_CAMPAIGN_BG_FALLBACK);
+            }
+          }}
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
 

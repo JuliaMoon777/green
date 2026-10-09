@@ -12,7 +12,42 @@ export const chickpeaLemonPepper: ProductDescriptionData = {
   tasteProfile: 'Citrusy · Peppery · Earthy',
   ingredients: '',
   additionalInfo: '',
-  notes: ''
+  notes: '',
+  nutritionalBenefits: [
+    {
+      id: 'chickpea-lemon-pepper-calcium-zinc',
+      productId: 'chickpea-lemon-pepper',
+      icon: 'chickpea-lemon-pepper-calcium-zinc',
+      title: 'CALCIUM & ZINC',
+      description: 'A source of calcium and zinc.',
+      enabled: true,
+    },
+    {
+      id: 'chickpea-lemon-pepper-plant-protein',
+      productId: 'chickpea-lemon-pepper',
+      icon: 'chickpea-lemon-pepper-plant-protein',
+      title: 'PLANT PROTEIN',
+      description: 'Plant-based protein from chickpeas.',
+      enabled: true,
+    },
+    {
+      id: 'chickpea-lemon-pepper-weight-control',
+      productId: 'chickpea-lemon-pepper',
+      icon: 'chickpea-lemon-pepper-weight-control',
+      title: 'WEIGHT CONTROL',
+      description: 'Prepared for future activation pending substantiation and regulatory approval.',
+      // Kept unpublished: health-related weight control claims must not appear publicly unless substantiated and approved
+      enabled: false,
+    },
+    {
+      id: 'chickpea-lemon-pepper-low-sodium',
+      productId: 'chickpea-lemon-pepper',
+      icon: 'chickpea-lemon-pepper-low-sodium',
+      title: 'LOW SODIUM',
+      description: 'Low in sodium.',
+      enabled: true,
+    },
+  ],
 };
 
 export const productDescription = chickpeaLemonPepper;

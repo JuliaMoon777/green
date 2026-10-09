@@ -12,7 +12,8 @@ export const favaBeansSummerSpices: ProductDescriptionData = {
   tasteProfile: 'Herbaceous · Earthy · Peppery',
   ingredients: '',
   additionalInfo: '',
-  notes: ''
+  notes: '',
+  nutritionalBenefits: [],
 };
 
 export const productDescription = favaBeansSummerSpices;

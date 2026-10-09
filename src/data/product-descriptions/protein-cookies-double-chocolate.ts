@@ -1,4 +1,8 @@
 import { ProductDescriptionData } from './fava-beans-chili-lemon';
+import {
+  createProteinCookiesBenefits,
+  createProteinCookiesHighlights,
+} from './protein-cookies-apple-cinnamon';
 
 export const proteinCookiesDoubleChocolate: ProductDescriptionData = {
   id: 'protein-cookies-double-chocolate',
@@ -12,7 +16,15 @@ export const proteinCookiesDoubleChocolate: ProductDescriptionData = {
   tasteProfile: 'Rich · Chocolatey · Indulgent',
   ingredients: '',
   additionalInfo: '',
-  notes: ''
+  notes: '',
+  nutritionalBenefits: createProteinCookiesBenefits('protein-cookies-double-chocolate', {
+    sugarFree: true,
+    highFibre: true,
+    vegan: true,
+  }),
+  additionalHighlights: createProteinCookiesHighlights('protein-cookies-double-chocolate', {
+    twoCookiesInside: true,
+  }),
 };
 
 export const productDescription = proteinCookiesDoubleChocolate;

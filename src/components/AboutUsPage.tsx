@@ -65,7 +65,10 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({
   };
 
   return (
-    <div className="relative min-h-[100svh] w-full bg-[#F5EFE4] text-[#1B2D1F] overflow-x-clip select-text">
+    <div
+      lang="en"
+      className="relative min-h-[100svh] w-full bg-[#F5EFE4] text-[#1B2D1F] overflow-x-clip select-text"
+    >
       {/* 1. FIXED WARM SUNLIT NATURAL STONE & LINEN EDITORIAL BACKDROP */}
       <div
         aria-hidden="true"
@@ -124,6 +127,11 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({
 
       {/* 3. MAIN EDITORIAL CONTENT CONTAINER */}
       <main className="relative z-20 w-full max-w-[1140px] 2xl:max-w-[1260px] mx-auto px-4 sm:px-6 md:px-10 lg:px-12 pt-6 sm:pt-10 md:pt-14 pb-16 sm:pb-24 lg:pb-28 pl-safe pr-safe pb-safe flex flex-col gap-6 sm:gap-8 lg:gap-10">
+        {/* Primary Semantic H1 for the About Us Page */}
+        <h1 className="sr-only">
+          About GREENERGY — Natural Snacks, Great Taste
+        </h1>
+
         {/* SECTION 1 — HERO INTRODUCTION (Editorial Glass Showcase) */}
         <motion.section
           {...revealMotion(0.04)}
@@ -146,9 +154,9 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({
                 ABOUT GREENERGY
               </span>
 
-              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-[54px] font-black tracking-tight text-[#1B2D1F] leading-[1.08] [text-wrap:balance]">
+              <h2 className="text-3xl xs:text-4xl sm:text-5xl md:text-[54px] font-black tracking-tight text-[#1B2D1F] leading-[1.08] [text-wrap:balance]">
                 Why Wait for Healthier Snacks?
-              </h1>
+              </h2>
 
               <p className="mt-4 sm:mt-5 text-lg sm:text-xl md:text-2xl font-bold text-[#2D6A3E] tracking-tight leading-snug">
                 Snack Green. Live Clean.
@@ -329,7 +337,7 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
               {/* Pillar 1 */}
-              <div className="flex flex-col gap-2.5 md:pr-4">
+              <article className="flex flex-col gap-2.5 md:pr-4">
                 <span className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#2D6A3E]">
                   01
                 </span>
@@ -340,10 +348,10 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({
                   We build our products around ingredients valued for their natural taste,
                   texture, and nutritional character.
                 </p>
-              </div>
+              </article>
 
               {/* Pillar 2 */}
-              <div className="flex flex-col gap-2.5 pt-5 md:pt-0 border-t md:border-t-0 md:border-l border-[#1B2D1F]/12 md:pl-6 lg:pl-8 md:pr-2">
+              <article className="flex flex-col gap-2.5 pt-5 md:pt-0 border-t md:border-t-0 md:border-l border-[#1B2D1F]/12 md:pl-6 lg:pl-8 md:pr-2">
                 <span className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#2D6A3E]">
                   02
                 </span>
@@ -354,10 +362,10 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({
                   Healthy snacking should be exciting. Every recipe is crafted to deliver a
                   distinctive, memorable taste profile.
                 </p>
-              </div>
+              </article>
 
               {/* Pillar 3 */}
-              <div className="flex flex-col gap-2.5 pt-5 md:pt-0 border-t md:border-t-0 md:border-l border-[#1B2D1F]/12 md:pl-6 lg:pl-8">
+              <article className="flex flex-col gap-2.5 pt-5 md:pt-0 border-t md:border-t-0 md:border-l border-[#1B2D1F]/12 md:pl-6 lg:pl-8">
                 <span className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#2D6A3E]">
                   03
                 </span>
@@ -368,7 +376,7 @@ export const AboutUsPage: React.FC<AboutUsPageProps> = ({
                   Whether at work, on the move, after training, or during a quiet break,
                   Greenergy fits naturally into your day.
                 </p>
-              </div>
+              </article>
             </div>
           </div>
         </motion.section>

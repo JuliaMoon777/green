@@ -1,7 +1,50 @@
 {
+  "headers": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": ".*\\.vercel\\.app$"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
+        }
+      ]
+    }
+  ],
   "rewrites": [
     {
-      "source": "/((?!products/|backgrounds/|brand/|effects/|social/|assets/|cookie-realistic\\.|favicon\\.).*)",
+      "source": "/about-us",
+      "destination": "/about-us/index.html"
+    },
+    {
+      "source": "/about-us/",
+      "destination": "/about-us/index.html"
+    },
+    {
+      "source": "/((?!products/|backgrounds/|brand/|effects/|social/|assets/|robots\\.txt|sitemap\\.xml|cookie-realistic\\.|favicon\\.).*)",
       "destination": "/index.html"
     }
   ]

@@ -12,7 +12,33 @@ export const favaBeansHoneyMustard: ProductDescriptionData = {
   tasteProfile: 'Sweet · Tangy · Savory',
   ingredients: '',
   additionalInfo: '',
-  notes: ''
+  notes: '',
+  nutritionalBenefits: [
+    {
+      id: 'honey-mustard-plant-protein',
+      productId: 'fava-beans-honey-mustard',
+      icon: 'honey-mustard-plant-protein',
+      title: 'PLANT PROTEIN',
+      description:
+        'Fava beans offer a naturally plant-based protein option as an alternative to pea and soy.',
+    },
+    {
+      id: 'honey-mustard-low-glycemic-index',
+      productId: 'fava-beans-honey-mustard',
+      icon: 'honey-mustard-low-glycemic-index',
+      title: 'LOW GLYCEMIC INDEX',
+      description:
+        'Fava beans are a legume associated with a relatively low glycemic index.',
+    },
+    {
+      id: 'honey-mustard-fava-vitamins',
+      productId: 'fava-beans-honey-mustard',
+      icon: 'honey-mustard-fava-vitamins',
+      title: 'VITAMINS IN FAVA BEANS',
+      description:
+        'Fava beans contain naturally occurring B vitamins and other micronutrients.',
+    },
+  ],
 };
 
 export const productDescription = favaBeansHoneyMustard;

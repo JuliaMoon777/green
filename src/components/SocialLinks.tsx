@@ -88,7 +88,10 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
   };
 
   return (
-    <div className={`flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0 ${className}`}>
+    <div
+      lang="en"
+      className={`flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0 ${className}`}
+    >
       {/* Instagram & Facebook Circular Frosted-Glass Icons */}
       <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
         {SOCIAL_ITEMS.map((item) => (

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Plus, Minus } from 'lucide-react';
 import { GreenergyProduct } from '../data/flavors';
 import { getProductDescriptionById, ProductDescriptionData } from '../data/product-descriptions';
+import { NutritionalBenefitsSection } from './NutritionalBenefits';
 
 interface ProductInlineInfoProps {
   product: GreenergyProduct;
@@ -119,26 +120,43 @@ export const ProductInlineInfo: React.FC<ProductInlineInfoProps> = React.memo(
     const ingredients = descriptionData?.ingredients?.trim() || '';
     const additionalInfo = descriptionData?.additionalInfo?.trim() || '';
     const notes = descriptionData?.notes?.trim() || '';
+    const nutritionalBenefits = (descriptionData?.nutritionalBenefits || []).filter(
+      (benefit) => benefit.productId === product.id && benefit.enabled !== false
+    );
+    const additionalHighlights = (descriptionData?.additionalHighlights || []).filter(
+      (highlight) => highlight.productId === product.id && highlight.enabled !== false
+    );
 
     const hasPrimaryBody = Boolean(fullDescription || tasteProfile);
     const hasSecondaryAccordions = Boolean(ingredients || additionalInfo || notes);
-    const isDarkScene = product.id.includes('peanuts');
-    const dividerColor = isDarkScene ? 'rgba(255, 255, 255, 0.16)' : 'rgba(27, 45, 31, 0.12)';
+    const hasNutritionalBenefits =
+      nutritionalBenefits.length > 0 || additionalHighlights.length > 0;
+    const isDarkScene = false;
+    const panelTextColor =
+      product.id === 'peanuts-fava-red-thai'
+        ? '#3A1A14'
+        : product.id === 'peanuts-fava-sweet-mustard'
+        ? '#3B2A14'
+        : product.textColor;
+    const panelAccentColor =
+      product.id === 'peanuts-fava-red-thai'
+        ? '#C62828'
+        : product.id === 'peanuts-fava-sweet-mustard'
+        ? '#B87D00'
+        : product.accentColor;
+    const dividerColor = 'rgba(27, 45, 31, 0.12)';
 
     return (
       <section
         ref={sectionRef}
         id="product-information-section"
-        aria-label={`Informacje o produkcie: ${displayName}`}
+        lang="en"
+        aria-label={`Product information: ${displayName}`}
         className="relative z-20 w-full max-w-[920px] mx-auto px-4 sm:px-8 md:px-12 pt-2 pb-14 sm:pt-8 sm:pb-24 pl-safe pr-safe pb-safe select-text"
       >
         {/* Premium Frosted-Glass Editorial Panel for high-contrast readability over ingredient backgrounds */}
         <div
-          className={`relative overflow-hidden rounded-3xl sm:rounded-[32px] px-6 py-7 sm:px-10 sm:py-10 md:px-12 md:py-12 backdrop-blur-xl transition-colors duration-500 ${
-            isDarkScene
-              ? 'bg-[#1A110B]/76 sm:bg-[#1A110B]/70 border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.36)]'
-              : 'bg-white/80 sm:bg-white/74 border border-white/85 shadow-[0_16px_44px_rgba(27,45,31,0.08)]'
-          }`}
+          className="relative overflow-hidden rounded-3xl sm:rounded-[32px] px-6 py-7 sm:px-10 sm:py-10 md:px-12 md:py-12 backdrop-blur-xl transition-colors duration-500 bg-white/80 sm:bg-white/74 border border-white/85 shadow-[0_16px_44px_rgba(27,45,31,0.08)]"
         >
           {/* Subtle internal radial light diffusion for clean typographic contrast */}
           <div
@@ -147,9 +165,8 @@ export const ProductInlineInfo: React.FC<ProductInlineInfoProps> = React.memo(
               pointer-events-none absolute inset-0 rounded-3xl sm:rounded-[32px]
             "
             style={{
-              background: isDarkScene
-                ? 'radial-gradient(ellipse 85% 75% at 50% 0%, rgba(255, 248, 231, 0.07) 0%, rgba(255, 248, 231, 0) 75%)'
-                : 'radial-gradient(ellipse 85% 75% at 50% 0%, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0) 75%)',
+              background:
+                'radial-gradient(ellipse 85% 75% at 50% 0%, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0) 75%)',
             }}
           />
 
@@ -157,7 +174,7 @@ export const ProductInlineInfo: React.FC<ProductInlineInfoProps> = React.memo(
               OLD INFORMATION: opacity 1 -> 0, translateY 0 -> 5px (180ms)
               NEW INFORMATION: opacity 0 -> 1, translateY 8px -> 0 (380ms) */}
           <AnimatePresence mode="wait">
-            <motion.div
+            <motion.article
               key={`inline-info-${product.id}`}
               initial={{
                 opacity: 0,
@@ -181,31 +198,31 @@ export const ProductInlineInfo: React.FC<ProductInlineInfoProps> = React.memo(
               }}
               className="relative z-10 flex flex-col transform-gpu will-change-transform will-change-opacity"
             >
-              {/* 1. SMALL CATEGORY LABEL */}
+              {/* 1. CATEGORY HEADING (H2) */}
               {displayCategory && (
                 <div className="mb-2 sm:mb-2.5">
-                  <span
-                    className="inline-block text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.14em]"
-                    style={{ color: product.accentColor }}
+                  <h2
+                    className="inline-block text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.14em] m-0"
+                    style={{ color: panelAccentColor }}
                   >
                     {displayCategory}
-                  </span>
+                  </h2>
                 </div>
               )}
 
-              {/* 2. LARGE PRODUCT TITLE */}
-              <h2
+              {/* 2. PRODUCT NAME HEADING (H3) */}
+              <h3
                 className="text-2xl xs:text-3xl sm:text-4xl md:text-[42px] font-black tracking-tight leading-[1.12]"
-                style={{ color: product.textColor }}
+                style={{ color: panelTextColor }}
               >
                 {displayName}
-              </h2>
+              </h3>
 
               {/* 3. SHORT DESCRIPTION (only if provided) */}
               {shortDescription && (
                 <p
                   className="mt-3 sm:mt-4 text-base sm:text-lg font-medium leading-relaxed max-w-2xl opacity-95 whitespace-pre-line"
-                  style={{ color: product.textColor }}
+                  style={{ color: panelTextColor }}
                 >
                   {shortDescription}
                 </p>
@@ -227,7 +244,7 @@ export const ProductInlineInfo: React.FC<ProductInlineInfoProps> = React.memo(
                       className={`${
                         tasteProfile ? 'md:col-span-7' : 'md:col-span-12 max-w-3xl'
                       } text-sm sm:text-base leading-relaxed whitespace-pre-line opacity-90`}
-                      style={{ color: product.textColor }}
+                      style={{ color: panelTextColor }}
                     >
                       {fullDescription}
                     </div>
@@ -240,21 +257,34 @@ export const ProductInlineInfo: React.FC<ProductInlineInfoProps> = React.memo(
                       } flex flex-col gap-1.5 md:pl-6 md:border-l`}
                       style={{ borderColor: dividerColor }}
                     >
-                      <h3
+                      <p
                         className="text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.12em] opacity-70"
-                        style={{ color: product.textColor }}
+                        style={{ color: panelTextColor }}
                       >
                         Taste profile
-                      </h3>
+                      </p>
                       <p
                         className="text-sm sm:text-[15px] font-semibold leading-relaxed whitespace-pre-line opacity-95"
-                        style={{ color: product.textColor }}
+                        style={{ color: panelTextColor }}
                       >
                         {tasteProfile}
                       </p>
                     </div>
                   )}
                 </div>
+              )}
+
+              {/* 5B. NUTRITIONAL BENEFIT HIGHLIGHTS (Custom SVG icons & benefit cards) */}
+              {hasNutritionalBenefits && (
+                <NutritionalBenefitsSection
+                  productId={product.id}
+                  benefits={nutritionalBenefits}
+                  additionalHighlights={additionalHighlights}
+                  textColor={panelTextColor}
+                  accentColor={panelAccentColor}
+                  isDarkScene={isDarkScene}
+                  dividerColor={dividerColor}
+                />
               )}
 
               {/* 6. OPTIONAL LIGHTWEIGHT ACCORDIONS FOR SECONDARY INFORMATION */}
@@ -270,8 +300,8 @@ export const ProductInlineInfo: React.FC<ProductInlineInfoProps> = React.memo(
                       id={`${product.id}-ingredients`}
                       label="Ingredients"
                       content={ingredients}
-                      textColor={product.textColor}
-                      accentColor={product.accentColor}
+                      textColor={panelTextColor}
+                      accentColor={panelAccentColor}
                       isDarkScene={isDarkScene}
                     />
                   )}
@@ -281,8 +311,8 @@ export const ProductInlineInfo: React.FC<ProductInlineInfoProps> = React.memo(
                       id={`${product.id}-additional-info`}
                       label="Additional information"
                       content={additionalInfo}
-                      textColor={product.textColor}
-                      accentColor={product.accentColor}
+                      textColor={panelTextColor}
+                      accentColor={panelAccentColor}
                       isDarkScene={isDarkScene}
                     />
                   )}
@@ -292,14 +322,14 @@ export const ProductInlineInfo: React.FC<ProductInlineInfoProps> = React.memo(
                       id={`${product.id}-notes`}
                       label="Product notes"
                       content={notes}
-                      textColor={product.textColor}
-                      accentColor={product.accentColor}
+                      textColor={panelTextColor}
+                      accentColor={panelAccentColor}
                       isDarkScene={isDarkScene}
                     />
                   )}
                 </div>
               )}
-            </motion.div>
+            </motion.article>
           </AnimatePresence>
         </div>
       </section>
